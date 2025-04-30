@@ -13,9 +13,10 @@ export const ProtectedRoute: FC<PropsWithChildren<ProtectedRouteProps>> = ({
 }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const location = useLocation();
+  const from = location.state?.from || '/';
 
   if (onlyUnAuth && isAuthenticated) {
-    return <Navigate to='/' state={{ from: location }} replace />;
+    return <Navigate to={from} />;
   }
 
   if (!onlyUnAuth && !isAuthenticated) {

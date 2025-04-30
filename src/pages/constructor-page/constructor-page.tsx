@@ -1,16 +1,15 @@
-import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from '@services/store';
-import { fetchIngredients } from '@slices';
+import { FC } from 'react';
+import { useSelector } from '@services/store';
 import { selectIngredientsLoading } from '@selectors';
 import { ConstructorPageUI } from '@ui-pages';
+import { Preloader } from '@ui';
 
 export const ConstructorPage: FC = () => {
-  const dispatch = useDispatch();
   const isIngredientsLoading = useSelector(selectIngredientsLoading);
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
+  if (isIngredientsLoading) {
+    return <Preloader />;
+  }
 
   return <ConstructorPageUI isIngredientsLoading={isIngredientsLoading} />;
 };

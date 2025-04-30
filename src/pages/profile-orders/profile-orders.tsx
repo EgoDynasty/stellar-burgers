@@ -1,36 +1,18 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
-import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from '@services/store';
-import { fetchUserOrders } from '@slices';
+import { FC } from 'react';
+import { useSelector } from '@services/store';
 import {
   selectUserOrders,
-  selectOrdersOrderRequest,
-  selectOrderError,
-  selectIsAuthenticated
+  selectUserOrdersLoading,
+  selectOrderError
 } from '@selectors';
-import { useNavigate } from 'react-router-dom';
 import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const orders: TOrder[] = useSelector(selectUserOrders);
-  const isLoading = useSelector(selectOrdersOrderRequest);
+  const isLoading = useSelector(selectUserOrdersLoading);
   const error = useSelector(selectOrderError);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login', { replace: true });
-    } else {
-      dispatch(fetchUserOrders());
-    }
-  }, [dispatch, isAuthenticated, navigate]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   if (isLoading) {
     return <Preloader />;

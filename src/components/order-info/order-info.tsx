@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { fetchOrderByNumberOrders } from '@slices';
 import {
   selectCurrentOrder,
-  selectOrdersOrderRequest,
+  selectOrderByNumberLoading,
   selectIngredients
 } from '@selectors';
 import { Preloader } from '../ui/preloader';
@@ -16,13 +16,13 @@ export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const orderData = useSelector(selectCurrentOrder);
   const ingredients = useSelector(selectIngredients);
-  const isLoading = useSelector(selectOrdersOrderRequest);
+  const isLoading = useSelector(selectOrderByNumberLoading);
 
   useEffect(() => {
-    if (number) {
+    if (number && (!orderData || orderData.number !== Number(number))) {
       dispatch(fetchOrderByNumberOrders(Number(number)));
     }
-  }, [dispatch, number]);
+  }, [dispatch, number, orderData]);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;

@@ -49,7 +49,10 @@ export type RootState = {
     userOrders: TOrder[];
     feed: { total: number; totalToday: number } | null;
     currentOrder: TOrder | null;
-    isLoading: boolean;
+    feedsLoading: boolean;
+    userOrdersLoading: boolean;
+    orderByNumberLoading: boolean;
+    placeOrderLoading: boolean;
     error: string | null;
   };
   auth: {

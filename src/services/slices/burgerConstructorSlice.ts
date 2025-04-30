@@ -1,6 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { orderBurgerApi } from '@api';
 import { TOrder, TConstructorIngredient, TIngredient } from '@utils-types';
+import { v4 as uuidv4 } from 'uuid';
 
 export const placeOrder = createAsyncThunk(
   'burgerConstructor/placeOrder',
@@ -34,27 +35,34 @@ const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   reducers: {
-    addIngredient: (state, action) => {
-      if (typeof action.payload !== 'object' || action.payload === null) {
-        console.error('Invalid payload for addIngredient:', action.payload);
-        return;
-      }
-      if (action.payload.type === 'bun') {
-        state.constructorItems.bun = action.payload;
-      } else {
-        state.constructorItems.ingredients.push({
-          ...action.payload,
-          id: Date.now().toString()
-        });
+    addIngredient: {
+      reducer(state, action: PayloadAction<TConstructorIngredient>) {
+        if (typeof action.payload !== 'object' || action.payload === null) {
+          console.error('Invalid payload for addIngredient:', action.payload);
+          return;
+        }
+        if (action.payload.type === 'bun') {
+          state.constructorItems.bun = action.payload;
+        } else {
+          state.constructorItems.ingredients.push(action.payload);
+        }
+      },
+      prepare(ingredient: TIngredient) {
+        return {
+          payload: {
+            ...ingredient,
+            uniqueId: uuidv4()
+          } as TConstructorIngredient
+        };
       }
     },
-    removeIngredient: (state, action) => {
+    removeIngredient: (state, action: PayloadAction<string>) => {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
-          (item) => item.id !== action.payload
+          (item) => item.uniqueId !== action.payload
         );
     },
-    moveIngredientUp: (state, action) => {
+    moveIngredientUp: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       if (index > 0) {
         const ingredients = [...state.constructorItems.ingredients];
@@ -65,7 +73,7 @@ const burgerConstructorSlice = createSlice({
         state.constructorItems.ingredients = ingredients;
       }
     },
-    moveIngredientDown: (state, action) => {
+    moveIngredientDown: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       if (index < state.constructorItems.ingredients.length - 1) {
         const ingredients = [...state.constructorItems.ingredients];

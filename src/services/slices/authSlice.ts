@@ -32,10 +32,10 @@ export const updateUser = createAsyncThunk(
 export const logout = createAsyncThunk('auth/logout', async () => {
   const refreshToken = localStorage.getItem('refreshToken');
   if (refreshToken) {
-    await logoutApi(); // Вызываем logoutApi, пока refreshToken ещё есть
+    await logoutApi();
   }
   localStorage.removeItem('refreshToken');
-  deleteCookie('accessToken'); // Очищаем accessToken после запроса
+  deleteCookie('accessToken');
 });
 
 interface AuthState {

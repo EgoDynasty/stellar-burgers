@@ -1,7 +1,7 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '@services/store';
-import { fetchUser, updateUser } from '@slices';
+import { updateUser } from '@slices';
 import { selectUser, selectAuthLoading, selectAuthError } from '@selectors';
 
 export const Profile: FC = () => {
@@ -15,12 +15,6 @@ export const Profile: FC = () => {
     email: '',
     password: ''
   });
-
-  useEffect(() => {
-    if (!user) {
-      dispatch(fetchUser());
-    }
-  }, [dispatch, user]);
 
   useEffect(() => {
     if (user) {

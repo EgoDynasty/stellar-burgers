@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from '@services/store';
-import { selectOrders, selectFeed, selectOrdersOrderRequest } from '@selectors';
+import { selectOrders, selectFeed, selectFeedsLoading } from '@selectors';
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
 import { Preloader } from '../ui/preloader';
@@ -17,7 +17,7 @@ export const FeedInfo: FC = () => {
     total: number;
     totalToday: number;
   } | null;
-  const isLoading = useSelector(selectOrdersOrderRequest);
+  const isLoading = useSelector(selectFeedsLoading);
 
   const readyOrders = getOrders(orders, 'done');
   const pendingOrders = getOrders(orders, 'pending');

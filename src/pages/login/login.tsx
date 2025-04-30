@@ -1,5 +1,5 @@
 import { FC, SyntheticEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '@services/store';
 import { login } from '@slices';
 import { selectAuthError } from '@selectors';
@@ -10,13 +10,15 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const errorText = useSelector(selectAuthError) || '';
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(login({ email, password })).then((result) => {
       if (login.fulfilled.match(result)) {
-        navigate('/', { replace: true });
+        const from = location.state?.from || '/';
+        navigate(from, { replace: true });
       }
     });
   };

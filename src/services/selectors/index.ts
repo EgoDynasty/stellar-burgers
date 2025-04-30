@@ -12,6 +12,9 @@ export {
   selectUserOrders,
   selectFeed,
   selectCurrentOrder,
-  selectOrderRequest as selectOrdersOrderRequest,
+  selectFeedsLoading,
+  selectUserOrdersLoading,
+  selectOrderByNumberLoading,
+  selectPlaceOrderLoading,
   selectOrderError
 } from './ordersSelectors';

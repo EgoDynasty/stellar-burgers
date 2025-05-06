@@ -1,0 +1,8 @@
+import { Store } from '@reduxjs/toolkit';
+import { RootState } from '../../src/services/store';
+
+declare global {
+  interface Window {
+    store?: Store<RootState>;
+  }
+}

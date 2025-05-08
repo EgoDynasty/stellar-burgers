@@ -49,6 +49,12 @@ const AppContent = () => {
 
   useEffect(() => {
     const accessToken = getCookie('accessToken');
+    console.log(
+      'Access token:',
+      accessToken,
+      'isAuthenticated:',
+      isAuthenticated
+    );
     if (accessToken && !isAuthenticated) {
       dispatch(fetchUser());
     }
@@ -79,6 +85,11 @@ const AppContent = () => {
     }
   }, [dispatch, isAuthenticated, userOrders]);
 
+  useEffect(() => {
+    console.log('Ingredients:', ingredients);
+    console.log('IsAuthenticated:', isAuthenticated);
+  }, [ingredients, isAuthenticated]);
+
   const background = location.state?.background;
   const handleModalClose = () => {
     navigate(-1);
@@ -90,6 +101,7 @@ const AppContent = () => {
       <>
         <p
           className={`text text_type_digits-default mb-4 ${orderInfoStyles.number}`}
+          data-testid='order-number'
         >
           #{String(number).padStart(6, '0')}
         </p>
